@@ -53,10 +53,14 @@ void View::CreateAxis()
     // Axis ticks
     QFont font("Times", 10);
     QGraphicsSimpleTextItem *txtItem;
+    QPen axLPen;
+    axLPen.setStyle(Qt::DotLine);
 
     // X Axis
     for (int idx = -100; idx < 3200; idx+=100) {
         scene->addLine(idx, -5, idx, 5, pen);
+        scene->addLine(idx, -80, idx, 1100, axLPen);
+
         txtItem = scene->addSimpleText(QString::number(idx),font);
         txtItem->setPos(idx-15,-20);
         QTransform tr = txtItem->transform();
@@ -66,6 +70,8 @@ void View::CreateAxis()
     // Y Axis
     for (int idx = -50; idx < 1100; idx+=50) {
         scene->addLine(-5, idx, 5, idx, pen);
+        scene->addLine(-120, idx, 3200, idx, axLPen);
+
         txtItem = scene->addSimpleText(QString::number(idx),font);
         txtItem->setPos(-45,idx+10);
         QTransform tr = txtItem->transform();
