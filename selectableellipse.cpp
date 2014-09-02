@@ -48,9 +48,9 @@ void SelectableCircle::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         font.setStyleStrategy(QFont::ForceOutline);
         painter->setFont(font);
         painter->save();
-        //painter->scale(1, -1);
+        painter->scale(1, -1);
 
-        painter->drawText(x+10,y+10, QString::number((double)x,'g',2) + ", " + QString::number(y));
+        painter->drawText(x,y, QString::number((double)x,'f',2) + ", " + QString::number(y));
         painter->restore();
     }
 }

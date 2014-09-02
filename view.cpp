@@ -1,13 +1,17 @@
 #include "view.h"
 #include <QWheelEvent>
+#include <QTransform>
 
 void GraphicsView::wheelEvent(QWheelEvent *e)
 {
-    /*if (e->delta() > 0)
-        //this->scale(
-        view->zoomIn(6);
+    double scaleFactor = 1.15;
+
+    this->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
+    if (e->delta() > 0) {
+        this->scale(scaleFactor, scaleFactor);
+    }
     else
-        view->zoomOut(6);*/
+        this->scale(1/scaleFactor, 1/scaleFactor);
     e->accept();
 }
 
@@ -33,8 +37,8 @@ void View::CreateAxis()
 
     pen.setWidth(3);
     pen.setBrush(Qt::black);
-    scene->addLine(-80, 0, 3200, 0, pen);
-    scene->addLine(0, -20, 0, 1100, pen);
+    scene->addLine(-120, 0, 3200, 0, pen);
+    scene->addLine(0, -80, 0, 1100, pen);
 
     ptCoord = new QGraphicsSimpleTextItem();
     ptCoord->setText("0, 0");
@@ -45,6 +49,29 @@ void View::CreateAxis()
     transform.scale(1,-1);
     ptCoord->setTransform(transform);
     scene->addItem(ptCoord);
+
+    // Axis ticks
+    QFont font("Times", 10);
+    QGraphicsSimpleTextItem *txtItem;
+
+    // X Axis
+    for (int idx = -100; idx < 3200; idx+=100) {
+        scene->addLine(idx, -5, idx, 5, pen);
+        txtItem = scene->addSimpleText(QString::number(idx),font);
+        txtItem->setPos(idx-15,-20);
+        QTransform tr = txtItem->transform();
+        tr.scale(1,-1);
+        txtItem->setTransform(tr);
+    }
+    // Y Axis
+    for (int idx = -50; idx < 1100; idx+=50) {
+        scene->addLine(-5, idx, 5, idx, pen);
+        txtItem = scene->addSimpleText(QString::number(idx),font);
+        txtItem->setPos(-45,idx+10);
+        QTransform tr = txtItem->transform();
+        tr.scale(1,-1);
+        txtItem->setTransform(tr);
+    }
 }
 
 View::~View()
